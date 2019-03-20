@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Poll;
+use App\Http\Resources\Poll as PollResources;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -16,7 +17,8 @@ class PollController extends Controller
         if(is_null($poll)){
             return response()->json($poll,404);
         }
-        return response()->json($poll,200);
+        $response=new PollResources($poll,200);
+        return response()->json($response,200);
     }
     public function store(Request $req){
         $rules=[
@@ -36,6 +38,10 @@ class PollController extends Controller
     public function destroy(Request $req,Poll $poll){
         $poll->delete();
         return response()->json(null,204);
+    }
+    public function questions(Request $req, Poll $poll){
+        $questions=$poll->questions;
+        return response()->json($questions,200);
     }
     public function errors(){
         return response()->json(['payment required'],501);
