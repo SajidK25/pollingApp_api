@@ -9,15 +9,21 @@ use Validator;
 class PollController extends Controller
 {
     public function index(){
-        $polls=Poll::get();
+        $polls=Poll::paginate(1);
         return response()->json($polls,200);
     }
     public function show($id){
+        $poll=Poll::with('questions')->findOrFail($id);
+        $response['poll']=$poll;
+        $response['questions']=$poll->questions;
+        /**
         $poll=Poll::find($id);
         if(is_null($poll)){
             return response()->json($poll,404);
         }
-        $response=new PollResources($poll,200);
+        $response=new PollResources(Poll::with('questions')->findOrFail($id),200);
+        */
+        // $response=new PollResources($response,200);
         return response()->json($response,200);
     }
     public function store(Request $req){
