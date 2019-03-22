@@ -42,6 +42,9 @@ class Kernel extends HttpKernel
             'bindings',
             \App\Http\Middleware\Logging::class,
             'HttpHeaders',
+            //\App\Http\Middleware\TokenAuth::class,
+            \App\Http\Middleware\BasicAuth::class,
+            'auth:api'
 
         ],
     ];
